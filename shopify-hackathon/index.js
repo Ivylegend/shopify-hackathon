@@ -1,19 +1,30 @@
-const accordionItemHeaders = document.querySelectorAll(".accordion-item-header");
+const accordionItemHeaders = document.querySelectorAll(
+  ".accordion-item-header"
+);
 const alertBell = document.querySelector(".alert");
+const one = document.querySelector(".one");
 const box = document.querySelector(".box");
 const menuBox = document.querySelector(".menu-box");
 const userName = document.querySelector(".user-div");
 
 // NOTIFICATION CLICK
 alertBell.addEventListener("click", () => {
+  if (menuBox.classList.contains("active")) {
+    menuBox.classList.remove("active");
+  }
   box.classList.add = "active";
   box.classList.toggle("active");
+  one.setAttribute("aria-expanded", "true");
 });
 
 // USERNAME CLICK
 userName.addEventListener("click", () => {
+  if (box.classList.contains("active")) {
+    box.classList.remove("active");
+  }
   menuBox.classList.add = "active";
   menuBox.classList.toggle("active");
+  userName.setAttribute("aria-expanded", "true");
 });
 
 // CANCEL BTN
@@ -43,7 +54,7 @@ upDown.onclick = function () {
 accordionItemHeaders.forEach((accordionItemHeader) => {
   accordionItemHeader.addEventListener("click", (event) => {
     const currentlyActiveAccordion = document.querySelector(
-      "accordion-item-header.active"
+      ".accordion-item-header.active"
     );
 
     if (
@@ -52,16 +63,20 @@ accordionItemHeaders.forEach((accordionItemHeader) => {
     ) {
       currentlyActiveAccordion.classList.toggle("active");
       currentlyActiveAccordion.nextElementSibling.style.maxHeight = 0;
+      // accordionItem.classList.toggle("bg_active");
     }
 
     accordionItemHeader.classList.toggle("active");
     const accordionItems = document.querySelectorAll(".accordion-item");
 
+    accordionItemHeader.setAttribute("aria-expanded", "true");
+
     const accordionItemBody = accordionItemHeader.nextElementSibling;
     if (accordionItemHeader.classList.contains("active")) {
       accordionItemBody.style.maxHeight = accordionItemBody.scrollHeight + "px";
+      accordionItemBody.setAttribute("aria-hidden", "false");
       accordionItems.forEach((accordionItem) => {
-        accordionItem.style.backgroundColor = "gray";
+        accordionItem.classList.toggle("bg_active");
       });
     } else {
       accordionItemBody.style.maxHeight = 0;
@@ -71,6 +86,9 @@ accordionItemHeaders.forEach((accordionItemHeader) => {
     }
   });
 });
+
+const count = 0;
+const counters = document.getElementById("#counter");
 
 // RANGE
 let counter = 0;
@@ -90,23 +108,42 @@ function updateCounter(img) {
   rangeInput.value = counter;
 }
 
+// ARIA LABELS CHANGE
+
 // LOADING ANIMATION
 const saveBtns = document.querySelectorAll(".save-btn");
+const loadedBtns = document.querySelectorAll(".loaded");
 saveBtns.forEach((saveBtn) => {
   saveBtn.onclick = function () {
-    if (
-      (this.innerHTML =
-        '<img src="https://crushingit.tech/hackathon-assets/icon-dashed-circle.svg" alt="check" />')
-    ) {
+    this.innerHTML =
+      "<img src='https://crushingit.tech/hackathon-assets/icon-spinner.svg' alt='load-spinner' class='loader'/>";
+    setTimeout(() => {
       this.innerHTML =
-        "<img src='https://crushingit.tech/hackathon-assets/icon-spinner.svg' alt='load-spinner' class='loader'/>";
-      setTimeout(() => {
-        this.innerHTML =
-          "<img src='https://crushingit.tech/hackathon-assets/icon-checkmark-circle.svg' alt='loaded' />";
-      }, 2000);
-    } else {
-      this.innerHTML =
-        '<img src="https://crushingit.tech/hackathon-assets/icon-dashed-circle.svg" alt="check" />';
-    }
+        "<img src='https://crushingit.tech/hackathon-assets/icon-checkmark-circle.svg' alt='loaded' class='loaded' />";
+    }, 2000);
   };
 });
+
+loadedBtns.forEach((loadedBtn) => {
+  loadedBtn.onclick = function () {
+    this.innerHTML =
+      "<img src='https://crushingit.tech/hackathon-assets/icon-spinner.svg' alt='load-spinner' class='loader'/>";
+    setTimeout(() => {
+      this.innerHTML =
+        "<img src='https://crushingit.tech/hackathon-assets/icon-dashed-circle.svg' alt='leader' />";
+    }, 2000);
+  };
+});
+
+// const checkBoxButtons = document.querySelector(".save-btn");
+// const notCompleted = checkBoxButtons.querySelector(".not-completed");
+// const completed = checkBoxButtons.querySelector(".loaded");
+// const loadingSpinner = checkBoxButtons.querySelector(".loader");
+
+// console.log(checkBoxButtons, notCompleted, completed, loadingSpinner);
+
+// function handleMarkDoneOrNotDone() {
+//   notCompleted.classList.add("hidden");
+// }
+
+// checkBoxButtons.addEventListener("click");
